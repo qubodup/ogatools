@@ -1,0 +1,33 @@
+#!/bin/sh
+
+command -v sox >/dev/null 2>&1 || { echo >&2 "This command requires sox but it's not installed. Aborting."; exit 1; }
+if (( $# <= 1 ))
+then
+  echo "Usage: montage-music file [file ...]"
+  exit 1
+fi
+
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+
+DATE="$(date +%Y%m%d@%H%M%S)"
+NAME="./montage-music-${DATE}.ogg"
+
+echo Creating temporary files
+for i in $*
+do
+  sox "$i" -c 2 -r 44100 /tmp/"$i-tmpX.wav" trim 0 10 fade 0 10 1 pad .5@0 norm
+done
+
+echo Merging to single preview file
+sox /tmp/*-tmpX.wav $NAME pad 0 .1
+echo Created $NAME file
+
+echo Deleting temporary files
+for i in $*
+do
+  rm /tmp/"$i-tmpX.wav"
+done
+
+IFS=$SAVEIFS
+

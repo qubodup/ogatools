@@ -1,0 +1,24 @@
+#!/bin/bash
+
+command -v montage >/dev/null 2>&1 || { echo >&2 "This command requires imagemagick but it's not installed. Aborting."; exit 1; }
+if (( $# != 1 ))
+then
+  echo "Usage: montage-icon file"
+  exit 1
+fi
+
+DIR=/tmp/montage-icon/
+DATE="$(date +%Y%m%d@%H%M%S)"
+
+if [ -d $DIR ]; then rm -r $DIR; fi
+mkdir $DIR
+convert "$1" -scale 100% $DIR/1x
+convert "$1" -scale 200% $DIR/2x
+convert "$1" -scale 300% $DIR/3x
+convert "$1" -scale 400% $DIR/4x
+convert "$1" -scale 500% $DIR/5x
+convert "$1" -scale 600% $DIR/6x
+montage -fill white -label '%f' $DIR/[0-9]* -tile 3 -background black $DIR/montage-icon-$DATE-1.png
+montage -label '%f' $DIR/[0-9]* -tile 3 -background grey50 $DIR/montage-icon-$DATE-2.png
+montage -label '%f' $DIR/[0-9]* -tile 3 -background white $DIR/montage-icon-$DATE-3.png
+montage $DIR/montage-icon* -tile 1 -geometry +0+0 montage-icon-$DATE.png

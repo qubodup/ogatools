@@ -20,7 +20,7 @@ do
 done
 
 echo Merging to single preview file
-sox /tmp/*-tmpX.wav $NAME pad 0 .1
+sox `for i in $*; do echo /tmp/"$i-tmpX.wav"; done` $NAME pad 0 .1
 echo Created $NAME file
 
 echo Deleting temporary files

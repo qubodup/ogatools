@@ -13,3 +13,6 @@ To create one OGG Vorbis file based on 10-second start segments of multiple musi
 
 montage-sfx
 To create one OGG Vorbis file based on multiple sound files.
+
+cydark
+To create a down-pitched version of a voice, based on http://www.youtube.com/watch?v=5TWZb0QfJh0

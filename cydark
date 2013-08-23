@@ -1,0 +1,16 @@
+#!/bin/bash
+
+command -v sox >/dev/null 2>&1 || { echo >&2 "This command requires sox but it's not installed. Aborting."; exit 1; }
+if (( $# != 1 ))
+then
+  echo "Usage: cydark file"
+  exit 1
+fi
+
+sox "$1" /tmp/cd125.wav pitch -125
+sox "$1" /tmp/cd250.wav pitch -250
+sox "$1" /tmp/cd500.wav pitch -500
+
+sox -m "/tmp/cd125.wav" "/tmp/cd250.wav" "/tmp/cd500.wav" "cydark-$1" norm
+#sox -m "/tmp/cd125.wav" "/tmp/cd250.wav" "/tmp/cd1.wav"
+#sox -m "/tmp/cd1.wav" "/tmp/cd500.wav" "cydark-""$1"

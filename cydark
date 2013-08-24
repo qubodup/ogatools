@@ -12,5 +12,3 @@ sox "$1" /tmp/cd250.wav pitch -250
 sox "$1" /tmp/cd500.wav pitch -500
 
 sox -m "/tmp/cd125.wav" "/tmp/cd250.wav" "/tmp/cd500.wav" "cydark-$1" norm
-#sox -m "/tmp/cd125.wav" "/tmp/cd250.wav" "/tmp/cd1.wav"
-#sox -m "/tmp/cd1.wav" "/tmp/cd500.wav" "cydark-""$1"

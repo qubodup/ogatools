@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "Click a window to record it"
+echo "Click a window to record it, press 'q' in this window to stop."
 
 # xwininfo is being used to get target window position and geometry
 CAPWIN_GEOMETRY=`xwininfo | grep geometry`
@@ -13,22 +13,6 @@ DATE="$(date +%Y%m%d@%H%M%S)"
 
 # debug position/geometry test
 # echo DIM $CAPWIN_DIM XPOS $CAPWIN_XPOS YPOS $CAPWIN_YPOS
-#ffmpeg -f alsa -ac 2 -i alsa -acodec pcm_s16le -f x11grab -r 30 -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -vpre lossless_ultrafast -threads 0 capwin-$DATE-raw.mkv
-#ffmpeg -f alsa -ac 2  -acodec pcm_s16le -f x11grab -r 30 -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -vpre lossless_ultrafast -threads 0 capwin-$DATE-raw.mkv
-#ffmpeg -f alsa -acodec pcm_s16le -f x11grab -r 30 -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -vpre libx264-ipod640 -threads 0 capwin-$DATE-raw.mkv
-
-#ffmpeg -f alsa  -acodec pcm_s16le -f x11grab -r 30 -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -vpre libx264-lossless_ultrafast -threads 0 capwin-$DATE-raw.mkv
-#ffmpeg -i capwin-$DATE-raw.mkv -acodec libmp3lame -ab 128k -ac 2 -vcodec libx264 -vpre lossless_slow -crf 22 -threads 0 capwin-$DATE-done.mp4
-
-#ffmpeg -f alsa -i hw:0,0 -acodec pcm_s16le -f x11grab -r 30 -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -vpre libx264-ipod640 -threads 0 capwin-$DATE-raw.mkv
-#ffmpeg -i capwin-$DATE-raw.mkv -acodec libmp3lame -ab 128k -vcodec libx264 -vpre libx264-ipod640 -crf 22 -threads 0 capwin-$DATE-done.mp4
-
-#ffmpeg -f alsa -i hw:0,0 -f x11grab -acodec pcm_s16le -r 30 -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv
-#ffmpeg -f alsa -i pulse -f x11grab -acodec pcm_s16le -r 30 -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec ffvhuff -threads 0 capwin-$DATE.mkv
 
 # do not set `-r 30` to avoid audio desynchronization. This comes at the cost of lagging being recorded.
 ffmpeg -f alsa -i hw:0,0 -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv
-
-#ffmpeg -f alsa -i hw:0,0 -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec huffyuv capwin-$DATE.mkv
-
-#ffmpeg -f alsa -i pulse -f x11grab -acodec pcm_s16le -r 30 -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv

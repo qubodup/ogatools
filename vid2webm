@@ -1,0 +1,2 @@
+#!/bin/bash
+ffmpeg -analyzeduration 999999999 -probesize 999999999 -i "$1" -vcodec libvpx -b 8000k -acodec libvorbis -aq 6 "$1".webm

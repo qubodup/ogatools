@@ -1,0 +1,35 @@
+#Copyright (c) 2012 Iwan 'qubodup' Gabovitch
+#
+#This software is provided 'as-is', without any express or implied warranty. In no event will the authors be held liable for any damages arising from the use of this software.
+#Permission is granted to anyone to use this software for any purpose, including commercial applications, and to alter it and redistribute it freely, subject to the following restrictions:
+#1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+#2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+#3. This notice may not be removed or altered from any source distribution.
+
+#!/bin/bash
+
+command -v montage >/dev/null 2>&1 || { echo >&2 "This command requires imagemagick but it's not installed. Aborting."; exit 1; }
+if (( $# != 1 ))
+then
+  echo "Usage: montage-icon file"
+  exit 1
+fi
+
+DIR=/tmp/montage-icon/
+DATE="$(date +%Y%m%d@%H%M%S)"
+
+if [ -d $DIR ]; then rm -r $DIR; fi
+mkdir $DIR
+convert "$1" -scale 128 $DIR/128px
+convert "$1" -scale 96 $DIR/096px
+convert "$1" -scale 64 $DIR/064px
+convert "$1" -scale 48 $DIR/048px
+convert "$1" -scale 32 $DIR/032px
+convert "$1" -scale 24 $DIR/024px
+convert "$1" -scale 16 $DIR/016px
+convert "$1" -scale 12 $DIR/012px
+convert "$1" -scale 8 $DIR/008px
+montage -fill white -label '%f' $DIR/[0-9]* -tile 3 -background black $DIR/montage-icon-$DATE-1.png
+montage -label '%f' $DIR/[0-9]* -tile 3 -background grey50 $DIR/montage-icon-$DATE-2.png
+montage -label '%f' $DIR/[0-9]* -tile 3 -background white $DIR/montage-icon-$DATE-3.png
+montage $DIR/montage-icon* -tile 1 -geometry +0+0 montage-icon-$DATE.png

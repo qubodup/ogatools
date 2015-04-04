@@ -1,7 +1,8 @@
-# USES ALSA ONLY
+# USES PULSE ONLY, you might need to check and set the recording device in pavucontrol
+# see https://qubodup.wordpress.com/2012/01/03/this-is-how-i-record-my-screen-on-linux/
 
 #!/usr/bin/env bash
-echo "Click a window to record it, press 'q' in this window to stop."
+echo "Click a window to record it"
 
 # xwininfo is being used to get target window position and geometry
 CAPWIN=`xwininfo`
@@ -14,9 +15,5 @@ CAPWIN_YPOS=`echo $CAPWIN_CORNERS | sed -e 's/^[^+]*+[^+]*+//;s/ .*$//'`
 # date for file name, to auto-increment file names
 DATE="$(date +%Y%m%d@%H%M%S)"
 
-# debug position/geometry test
-# echo DIM $CAPWIN_DIM XPOS $CAPWIN_XPOS YPOS $CAPWIN_YPOS
-
 # do not set `-r 30` to avoid audio desynchronization. This comes at the cost of lagging being recorded.
-ffmpeg -f alsa -i hw:0,0 -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv
-#ffmpeg -f alsa -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv
+ffmpeg -f alsa -i pulse -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv

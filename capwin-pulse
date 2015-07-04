@@ -13,7 +13,12 @@ CAPWIN_XPOS=`echo $CAPWIN_CORNERS | sed -e 's/^[^+]*+//;s/+.*$//'`
 CAPWIN_YPOS=`echo $CAPWIN_CORNERS | sed -e 's/^[^+]*+[^+]*+//;s/ .*$//'`
 
 # date for file name, to auto-increment file names
-DATE="$(date +%Y%m%d@%H%M%S)"
+
+if [[ $1 != "" ]]; then
+	NAME="$1"
+else
+  NAME="$(date +%Y%m%d@%H%M%S)"
+fi
 
 # do not set `-r 30` to avoid audio desynchronization. This comes at the cost of lagging being recorded.
-ffmpeg -f alsa -i pulse -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv
+ffmpeg -f alsa -sample_rate 44100 -i pulse -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$NAME.mkv

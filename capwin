@@ -18,5 +18,5 @@ DATE="$(date +%Y%m%d@%H%M%S)"
 # echo DIM $CAPWIN_DIM XPOS $CAPWIN_XPOS YPOS $CAPWIN_YPOS
 
 # do not set `-r 30` to avoid audio desynchronization. This comes at the cost of lagging being recorded.
-ffmpeg -f alsa -i hw:0,0 -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv
+ffmpeg -f alsa -i hw:0,0 -acodec pcm_s16le -f x11grab -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv
 #ffmpeg -f alsa -f x11grab -acodec pcm_s16le -s $CAPWIN_DIM -i :0.0+$CAPWIN_XPOS,$CAPWIN_YPOS -vcodec libx264 -crf 0 -preset ultrafast -threads 0 capwin-$DATE.mkv

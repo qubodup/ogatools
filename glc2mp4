@@ -1,0 +1,9 @@
+#!/bin/bash
+echo "Encoding $1 audio"
+glc-play "$1" -a 1 -o "$1.wav"
+echo "Encoding $1"
+glc-play -f 30 "$1" -o - -y 1 | ffmpeg -y -i - -i "$1.wav" -c:a libmp3lame -b:a 128k -c:v libx264 -vf "lutyuv=y=gammaval(0.8)" -b:v 6000k -threads 0 "${1%.glc}.mp4"
+echo "Deleting $1.wav"
+rm "$1.wav"
+echo "Done!"
+#echo try qt-faststart now
